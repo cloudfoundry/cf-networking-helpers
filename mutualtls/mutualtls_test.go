@@ -176,6 +176,7 @@ var _ = Describe("TLS config for internal API server", func() {
 
 				It("refuses the connection from the client", func() {
 					_, err := makeRequest(serverListenAddr, clientTLSConfig)
+
 					Expect(err).To(MatchError(ContainSubstring("remote error")))
 				})
 			})

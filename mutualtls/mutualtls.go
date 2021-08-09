@@ -43,6 +43,7 @@ func newTLSConfig(certFile, keyFile string) (*tls.Config, error) {
 	tlsConfig := &tls.Config{
 		Certificates: []tls.Certificate{keyPair},
 		MinVersion:   tls.VersionTLS12,
+		MaxVersion:   tls.VersionTLS12,
 	}
 	return tlsConfig, nil
 }

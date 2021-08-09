@@ -1,7 +1,6 @@
 package db_test
 
 import (
-	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
@@ -15,8 +14,7 @@ import (
 )
 
 const (
-
-  DATABASE_CLIENT_CERT = `-----BEGIN CERTIFICATE-----
+	DATABASE_CLIENT_CERT = `-----BEGIN CERTIFICATE-----
 MIIEOTCCAiECFFQB88eMvRFzig5vh+MJyi0LpnODMA0GCSqGSIb3DQEBCwUAMFcx
 CzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRl
 cm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB215c3FsQ0EwHhcNMjAwNzIx
@@ -41,7 +39,6 @@ Gim3GXnxjUDAUZOd88665Y2iirAmG1TcMDek0lBu7/ysuxjBK+Ef3BQ0YONQvzmn
 8OgCqZOlf9gdcBb1P6yIT2tIHUJu8D6C0PJuZi2+N6W8D+3tuGdaGxz+jOEDFcEc
 mSvPMfv+Qs4rTUvQi9ISXSWS9WDxye35Y/H5Zas=
 -----END CERTIFICATE-----`
-
 
 	DATABASE_CLIENT_KEY = `-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAoCDk9QQsut5x0te6zRc9UmJ5lT4qMk26SrQ+hGUyVYj4dP4h
@@ -169,10 +166,8 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 				Expect(mySQLAdapter.RegisterTLSConfigCallCount()).To(Equal(1))
 				passedTLSConfigName, passedTLSConfig := mySQLAdapter.RegisterTLSConfigArgsForCall(0)
 				Expect(passedTLSConfigName).To(Equal("some-database-tls"))
-				Expect(passedTLSConfig).To(Equal(&tls.Config{
-					InsecureSkipVerify: false,
-					RootCAs:            caCertPool,
-				}))
+				Expect(passedTLSConfig.InsecureSkipVerify).To(Equal(false))
+				Expect(passedTLSConfig.RootCAs.Subjects()).To(Equal(caCertPool.Subjects()))
 			})
 
 			Context("when SkipHostnameValidation is true", func() {
@@ -189,7 +184,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 					passedTLSConfigName, passedTLSConfig := mySQLAdapter.RegisterTLSConfigArgsForCall(0)
 					Expect(passedTLSConfigName).To(Equal("some-database-tls"))
 					Expect(passedTLSConfig.InsecureSkipVerify).To(BeTrue())
-					Expect(passedTLSConfig.RootCAs).To(Equal(caCertPool))
+					Expect(passedTLSConfig.RootCAs.Subjects()).To(Equal(caCertPool.Subjects()))
 					Expect(passedTLSConfig.Certificates).To(BeNil())
 					// impossible to assert VerifyPeerCertificate is set to a specfic function
 					Expect(passedTLSConfig.VerifyPeerCertificate).NotTo(BeNil())
