@@ -33,10 +33,11 @@ github.com/gogo/protobuf/protoc-gen-gogo/descriptor
 ## explicit
 github.com/jmoiron/sqlx
 github.com/jmoiron/sqlx/reflectx
-# github.com/lib/pq v1.0.0
+# github.com/lib/pq v1.10.3
 ## explicit
 github.com/lib/pq
 github.com/lib/pq/oid
+github.com/lib/pq/scram
 # github.com/mailru/easyjson v0.0.0-20180823135443-60711f1a8329
 ## explicit
 github.com/mailru/easyjson
