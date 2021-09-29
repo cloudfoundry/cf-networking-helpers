@@ -135,7 +135,7 @@ var _ = Describe("Config", func() {
 			It("returns the connection string", func() {
 				connectionString, err := config.ConnectionString()
 				Expect(err).NotTo(HaveOccurred())
-				Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&writeTimeout=5s"))
+				Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&writeTimeout=5s&sql_mode=%28SELECT+CONCAT%28%40%40sql_mode%2C%27%2CANSI_QUOTES%27%29%29"))
 			})
 
 			Context("when require_ssl is enabled", func() {
@@ -161,7 +161,7 @@ var _ = Describe("Config", func() {
 					It("returns the amended connection string", func() {
 						connectionString, err := config.ConnectionString()
 						Expect(err).NotTo(HaveOccurred())
-						Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&tls=some-database-tls&writeTimeout=5s"))
+						Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&tls=some-database-tls&writeTimeout=5s&sql_mode=%28SELECT+CONCAT%28%40%40sql_mode%2C%27%2CANSI_QUOTES%27%29%29"))
 					})
 				})
 

@@ -126,7 +126,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 		It("builds a connection string", func() {
 			connectionString, err := mysqlConnectionStringBuilder.Build(config)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&writeTimeout=5s"))
+			Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&writeTimeout=5s&sql_mode=%28SELECT+CONCAT%28%40%40sql_mode%2C%27%2CANSI_QUOTES%27%29%29"))
 		})
 
 		Context("when mysql.ParseDSN can't parse the connection string", func() {
@@ -161,7 +161,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 			It("builds a tls connection string", func() {
 				connectionString, err := mysqlConnectionStringBuilder.Build(config)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&tls=some-database-tls&writeTimeout=5s"))
+				Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&tls=some-database-tls&writeTimeout=5s&sql_mode=%28SELECT+CONCAT%28%40%40sql_mode%2C%27%2CANSI_QUOTES%27%29%29"))
 
 				Expect(mySQLAdapter.RegisterTLSConfigCallCount()).To(Equal(1))
 				passedTLSConfigName, passedTLSConfig := mySQLAdapter.RegisterTLSConfigArgsForCall(0)
@@ -178,7 +178,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 				It("builds tls config skipping hostname", func() {
 					connectionString, err := mysqlConnectionStringBuilder.Build(config)
 					Expect(err).NotTo(HaveOccurred())
-					Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&tls=some-database-tls&writeTimeout=5s"))
+					Expect(connectionString).To(Equal("some-user:some-password@tcp(some-host:1234)/some-database?parseTime=true&readTimeout=5s&timeout=5s&tls=some-database-tls&writeTimeout=5s&sql_mode=%28SELECT+CONCAT%28%40%40sql_mode%2C%27%2CANSI_QUOTES%27%29%29"))
 
 					Expect(mySQLAdapter.RegisterTLSConfigCallCount()).To(Equal(1))
 					passedTLSConfigName, passedTLSConfig := mySQLAdapter.RegisterTLSConfigArgsForCall(0)
