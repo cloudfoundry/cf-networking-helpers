@@ -31,6 +31,17 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
+      mysql8:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: mysql
+        ports:
+        - 3306/tcp
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
     - uses: actions/checkout@v2
@@ -63,6 +74,14 @@ jobs:
         DB_PASSWORD: mysql
         DB_HOST: 127.0.0.1
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
+
+    - name: Test Mysql8
+      run: ./scripts/test.sh
+      env:
+        DB: mysql
+        DB_PASSWORD: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: ${{ job.services.mysql8.ports[3306] }}
 
   promote:
     needs: test
