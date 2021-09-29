@@ -15,7 +15,7 @@ function bootDB {
   if [ "$db" = "postgres" ]; then
     launchDB="(docker-entrypoint.sh postgres &> /var/log/postgres-boot.log) &"
     testConnection="psql -h localhost -U postgres -c '\conninfo' &>/dev/null"
-  elif [ "$db" = "mysql" ]  || [ "$db" = "mysql-5.6" ]; then
+  elif [[ "$db" == "mysql"* ]]; then
     launchDB="(MYSQL_ROOT_PASSWORD=password /entrypoint.sh mysqld &> /var/log/mysql-boot.log) &"
     testConnection="echo '\s;' | mysql -h 127.0.0.1 -u root --password='password' &>/dev/null"
   else
@@ -49,14 +49,9 @@ else
   extraArgs="${@}"
 fi
 
-if [ ${DB:-"none"} = "mysql" ] || [ ${DB:-"none"} = "mysql-5.6" ]; then
-  if [ ${DB_PORT:-"none"} = "none" ]; then
-    bootDB ${DB}
-  fi
-  ginkgo -r --race -randomizeAllSpecs ${extraArgs} db/timeouts
-elif [ ${DB:-"none"} = "postgres" ]; then
-  if [ ${DB_PORT:-"none"} = "none" ]; then
-    bootDB ${DB}
+if [ "${DB:-"none"}" != "none" ]; then
+  if [ "${DB_PORT:-"none"}" = "none" ]; then
+    bootDB "${DB}"
   fi
   ginkgo -r --race -randomizeAllSpecs ${extraArgs} db/timeouts
 else

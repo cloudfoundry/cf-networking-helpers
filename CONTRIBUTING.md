@@ -39,10 +39,16 @@ running against a recent version of Go.
 
 ## Running SQL Tests
 
-### MySQL
+### MySQL 5.7
 
 ```
 DB=mysql ./scripts/docker-test
+```
+
+### MySQL 8
+
+```
+DB=mysql8 ./scripts/docker-test
 ```
 
 ### Postgres
