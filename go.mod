@@ -1,6 +1,6 @@
 module code.cloudfoundry.org/cf-networking-helpers
 
-go 1.17
+go 1.18
 
 replace code.cloudfoundry.org/lager => code.cloudfoundry.org/lager v1.1.1-0.20210513163233-569157d2803b
 
