@@ -13,6 +13,7 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/lib/pq v1.10.6
+
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.17.0
