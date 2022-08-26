@@ -17,5 +17,5 @@ func TestDb(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	rand.Seed(ginkgoConfig.GinkgoConfig.RandomSeed + int64(GinkgoParallelNode()))
+	rand.Seed(ginkgoConfig.GinkgoConfig.RandomSeed + int64(GinkgoParallelProcess()))
 })

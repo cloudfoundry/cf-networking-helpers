@@ -256,7 +256,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 					[]byte("foo"),
 					[]byte("bar"),
 				}, nil)
-				Expect(err.Error()).To(ContainSubstring("tls: failed to parse certificate from server: asn1: structure error: tags don't match"))
+				Expect(err.Error()).To(ContainSubstring("tls: failed to parse certificate from server: x509: malformed certificate"))
 			})
 		})
 

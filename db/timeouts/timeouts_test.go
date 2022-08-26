@@ -73,23 +73,31 @@ var _ = Describe("Timeout", func() {
 	}
 
 	expectContextDeadlineExceeded := func(dbFunc func() error) {
-		It("returns a context deadline exceeded error", func(done Done) {
-			defer database.Close()
-			err := dbFunc()
-			Expect(err).To(HaveOccurred())
-			Expect(err).To(BeAssignableToTypeOf(context.DeadlineExceeded))
-			close(done)
-		}, testTimeoutInSeconds)
+		It("returns a context deadline exceeded error", func() {
+			done := make(chan interface{})
+			go func() {
+				defer database.Close()
+				err := dbFunc()
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(BeAssignableToTypeOf(context.DeadlineExceeded))
+				close(done)
+			}()
+			Eventually(done, testTimeoutInSeconds).Should(BeClosed())
+		})
 	}
 
 	expectInvalidConnection := func(dbFunc func() error) {
-		It("returns a tcp i/o timeout error", func(done Done) {
-			defer database.Close()
-			err := dbFunc()
-			Expect(err).To(HaveOccurred())
-			Expect(err).To(MatchError("invalid connection"))
-			close(done)
-		}, testTimeoutInSeconds)
+		It("returns a tcp i/o timeout error", func() {
+			done := make(chan interface{})
+			go func() {
+				defer database.Close()
+				err := dbFunc()
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(MatchError("invalid connection"))
+				close(done)
+			}()
+			Eventually(done, testTimeoutInSeconds).Should(BeClosed())
+		})
 	}
 
 	AfterEach(func() {
