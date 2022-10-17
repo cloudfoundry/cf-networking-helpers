@@ -15,7 +15,7 @@ require (
 	github.com/lib/pq v1.10.7
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo v1.16.5
-	github.com/onsi/gomega v1.21.1
+	github.com/onsi/gomega v1.22.1
 	github.com/pkg/errors v0.9.1
 	github.com/square/certstrap v1.2.0
 	github.com/tedsuo/ifrit v0.0.0-20180802180643-bea94bb476cc
