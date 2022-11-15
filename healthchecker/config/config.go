@@ -7,19 +7,19 @@ import (
 )
 
 type HealthCheckEndpoint struct {
-	Host     string `json:"host"`
-	Port     int    `json:"port"`
-	Path     string `json:"path"`
-	User     string `json:"user"`
-	Password string `json:"password"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Path     string `yaml:"path"`
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
 }
 
 type Config struct {
-	ComponentName              string              `json:"component_name"`
-	HealthCheckEndpoint        HealthCheckEndpoint `json:"healthcheck_endpoint"`
-	HealthCheckPollInterval    time.Duration       `json:"healthcheck_poll_interval",default:"10s"`
-	HealthCheckTimeout         time.Duration       `json:"healthcheck_timeout",default:"5s"`
-	StartResponseDelayInterval time.Duration       `json:"start_response_delay_interval,omitempty",default:"5s"`
-	StartupDelayBuffer         time.Duration       `json:"startup_delay_buffer",default:"5s"`
+	ComponentName              string              `yaml:"component_name"`
+	HealthCheckEndpoint        HealthCheckEndpoint `yaml:"healthcheck_endpoint"`
+	HealthCheckPollInterval    time.Duration       `yaml:"healthcheck_poll_interval",default:"10s"`
+	HealthCheckTimeout         time.Duration       `yaml:"healthcheck_timeout",default:"5s"`
+	StartResponseDelayInterval time.Duration       `yaml:"start_response_delay_interval,omitempty",default:"5s"`
+	StartupDelayBuffer         time.Duration       `yaml:"startup_delay_buffer",default:"5s"`
 	lagerflags.LagerConfig
 }
