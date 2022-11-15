@@ -19,6 +19,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/square/certstrap v1.2.0
 	github.com/tedsuo/ifrit v0.0.0-20180802180643-bea94bb476cc
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (

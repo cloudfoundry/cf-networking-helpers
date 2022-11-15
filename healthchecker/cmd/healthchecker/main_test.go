@@ -1,7 +1,6 @@
 package main_test
 
 import (
-	"encoding/json"
 	"io/ioutil"
 	"net/url"
 	"os"
@@ -16,6 +15,7 @@ import (
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 	"github.com/onsi/gomega/ghttp"
+	"gopkg.in/yaml.v2"
 )
 
 var _ = Describe("HealthChecker", func() {
@@ -46,7 +46,10 @@ var _ = Describe("HealthChecker", func() {
 		configFile, err = ioutil.TempFile("", "healthchecker.config")
 		Expect(err).NotTo(HaveOccurred())
 
-		err = json.NewEncoder(configFile).Encode(cfg)
+		cfgBytes, err := yaml.Marshal(cfg)
+		Expect(err).NotTo(HaveOccurred())
+
+		_, err = configFile.Write(cfgBytes)
 		Expect(err).NotTo(HaveOccurred())
 
 		command := exec.Command(binPath, "-c", configFile.Name())

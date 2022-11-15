@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -16,6 +15,7 @@ import (
 	"code.cloudfoundry.org/cf-networking-helpers/healthchecker/watchdog"
 	"code.cloudfoundry.org/lager"
 	"code.cloudfoundry.org/lager/lagerflags"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -33,7 +33,7 @@ func main() {
 		if err != nil {
 			panic(fmt.Sprintf("Could not read config file: %s, err: %s", configFile, err.Error()))
 		}
-		err = json.Unmarshal(b, &c)
+		err = yaml.Unmarshal(b, &c)
 		if err != nil {
 			panic(fmt.Sprintf("Could not unmarshal config file: %s, err: %s", configFile, err.Error()))
 		}
