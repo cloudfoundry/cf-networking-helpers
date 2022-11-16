@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"net/url"
 	"os"
 	"os/signal"
@@ -15,7 +14,6 @@ import (
 	"code.cloudfoundry.org/cf-networking-helpers/healthchecker/watchdog"
 	"code.cloudfoundry.org/lager"
 	"code.cloudfoundry.org/lager/lagerflags"
-	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -24,23 +22,12 @@ const (
 
 func main() {
 	var configFile string
-	var c config.Config
 	flag.StringVar(&configFile, "c", "", "Configuration File")
 	flag.Parse()
 
-	if configFile != "" {
-		b, err := ioutil.ReadFile(configFile)
-		if err != nil {
-			panic(fmt.Sprintf("Could not read config file: %s, err: %s", configFile, err.Error()))
-		}
-		err = yaml.Unmarshal(b, &c)
-		if err != nil {
-			panic(fmt.Sprintf("Could not unmarshal config file: %s, err: %s", configFile, err.Error()))
-		}
-	}
-
-	if c.ComponentName == "" {
-		panic(fmt.Sprintf("Invalid component_name in config: %s", configFile))
+	c, err := config.LoadConfig(configFile)
+	if err != nil {
+		panic(err)
 	}
 
 	logConfig := lagerflags.DefaultLagerConfig()
@@ -66,7 +53,7 @@ func main() {
 	signals := make(chan os.Signal, SIGNAL_BUFFER_SIZE)
 	signal.Notify(signals, syscall.SIGUSR1)
 
-	err := w.WatchHealthcheckEndpoint(context.Background(), signals)
+	err = w.WatchHealthcheckEndpoint(context.Background(), signals)
 	if err != nil {
 		logger.Fatal("Error running healthcheck:", err)
 	}

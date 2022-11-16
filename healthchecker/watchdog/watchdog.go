@@ -52,7 +52,7 @@ func (w *Watchdog) WatchHealthcheckEndpoint(ctx context.Context, signals <-chan 
 				return nil
 			}
 		case <-pollTimer.C:
-			w.logger.Debug("Verifying endpoint", lager.Data{"component": w.componentName})
+			w.logger.Debug("Verifying endpoint", lager.Data{"component": w.componentName, "poll-interval": w.pollInterval})
 			err := w.HitHealthcheckEndpoint()
 			if err != nil {
 				errCounter += 1
