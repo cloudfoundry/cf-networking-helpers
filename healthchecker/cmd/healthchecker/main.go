@@ -42,7 +42,11 @@ func main() {
 	if c.ComponentName == "" {
 		panic(fmt.Sprintf("Invalid component_name in config: %s", configFile))
 	}
-	logger, _ := lagerflags.NewFromConfig(c.ComponentName, c.LagerConfig)
+
+	logConfig := lagerflags.DefaultLagerConfig()
+	logConfig.LogLevel = c.LogLevel
+	logConfig.TimeFormat = lagerflags.FormatRFC3339
+	logger, _ := lagerflags.NewFromConfig(c.ComponentName, logConfig)
 
 	startupDelay := c.StartResponseDelayInterval + c.StartupDelayBuffer
 	logger.Debug("Sleeping before gorouter responds to /health endpoint on startup", lager.Data{"sleep_time_seconds": startupDelay.Seconds()})

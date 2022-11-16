@@ -2,8 +2,6 @@ package config
 
 import (
 	"time"
-
-	"code.cloudfoundry.org/lager/lagerflags"
 )
 
 type HealthCheckEndpoint struct {
@@ -21,5 +19,5 @@ type Config struct {
 	HealthCheckTimeout         time.Duration       `yaml:"healthcheck_timeout",default:"5s"`
 	StartResponseDelayInterval time.Duration       `yaml:"start_response_delay_interval,omitempty",default:"5s"`
 	StartupDelayBuffer         time.Duration       `yaml:"startup_delay_buffer",default:"5s"`
-	lagerflags.LagerConfig
+	LogLevel                   string              `yaml:"log_level",default:"info"`
 }

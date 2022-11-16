@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"code.cloudfoundry.org/cf-networking-helpers/healthchecker/config"
-	"code.cloudfoundry.org/lager/lagerflags"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
@@ -28,10 +27,8 @@ var _ = Describe("HealthChecker", func() {
 
 	BeforeEach(func() {
 		cfg = config.Config{
-			ComponentName: "healthchecker",
-			LagerConfig: lagerflags.LagerConfig{
-				LogLevel: "info",
-			},
+			ComponentName:           "healthchecker",
+			LogLevel:                "info",
 			StartupDelayBuffer:      1 * time.Millisecond,
 			HealthCheckPollInterval: 1 * time.Millisecond,
 			HealthCheckTimeout:      1 * time.Millisecond,
