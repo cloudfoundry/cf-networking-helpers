@@ -27,11 +27,12 @@ var _ = Describe("HealthChecker", func() {
 
 	BeforeEach(func() {
 		cfg = config.Config{
-			ComponentName:           "healthchecker",
-			LogLevel:                "info",
-			StartupDelayBuffer:      1 * time.Millisecond,
-			HealthCheckPollInterval: 1 * time.Millisecond,
-			HealthCheckTimeout:      1 * time.Millisecond,
+			ComponentName:              "healthchecker",
+			LogLevel:                   "info",
+			StartupDelayBuffer:         1 * time.Millisecond,
+			StartResponseDelayInterval: 1 * time.Millisecond,
+			HealthCheckPollInterval:    1 * time.Millisecond,
+			HealthCheckTimeout:         1 * time.Millisecond,
 		}
 		var err error
 		binPath, err = gexec.Build("code.cloudfoundry.org/cf-networking-helpers/healthchecker/cmd/healthchecker", "-race")
@@ -66,11 +67,16 @@ var _ = Describe("HealthChecker", func() {
 
 		It("fails with error", func() {
 			Eventually(session).Should(gexec.Exit(2))
-			Expect(session.Err).To(gbytes.Say("Invalid component_name"))
+			Expect(session.Err).To(gbytes.Say("Missing component_name"))
 		})
 	})
 
 	Context("when there is no server running", func() {
+		BeforeEach(func() {
+			cfg.HealthCheckEndpoint.Host = "invalid-host"
+			cfg.HealthCheckEndpoint.Port = 4444
+		})
+
 		It("fails", func() {
 			Eventually(session, 10*time.Second).Should(gexec.Exit(2))
 			Expect(session.Out).To(gbytes.Say("Error running healthcheck"))
