@@ -4,8 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net"
 	"net/http"
+	"net/url"
 	"os"
+	"strings"
 	"syscall"
 	"time"
 
@@ -17,19 +20,27 @@ const (
 )
 
 type Watchdog struct {
-	host          string
+	url           *url.URL
 	componentName string
 	pollInterval  time.Duration
 	client        http.Client
 	logger        lager.Logger
 }
 
-func NewWatchdog(host string, componentName string, pollInterval time.Duration, healthcheckTimeout time.Duration, logger lager.Logger) *Watchdog {
+func NewWatchdog(u *url.URL, componentName string, pollInterval time.Duration, healthcheckTimeout time.Duration, logger lager.Logger) *Watchdog {
 	client := http.Client{
 		Timeout: healthcheckTimeout,
 	}
+	if strings.HasPrefix(u.Host, "unix") {
+		socket := strings.TrimPrefix(u.Host, "unix")
+		client.Transport = &http.Transport{
+			DialContext: func(_ context.Context, _, _ string) (net.Conn, error) {
+				return net.Dial("unix", socket)
+			},
+		}
+	}
 	return &Watchdog{
-		host:          host,
+		url:           u,
 		componentName: componentName,
 		pollInterval:  pollInterval,
 		client:        client,
@@ -78,11 +89,19 @@ func (w *Watchdog) WatchHealthcheckEndpoint(ctx context.Context, signals <-chan 
 }
 
 func (w *Watchdog) HitHealthcheckEndpoint() error {
-	response, err := w.client.Get(w.host)
+	req, err := http.NewRequest("GET", w.url.String(), nil)
 	if err != nil {
 		return err
 	}
-	// fmt.Printf("status: %d", response.StatusCode)
+	if req.URL.Host == "" {
+		req.URL.Host = w.url.Host
+	}
+
+	response, err := w.client.Do(req)
+	if err != nil {
+		return err
+	}
+
 	if response.StatusCode != http.StatusOK {
 		return errors.New(fmt.Sprintf(
 			"%v received from healthcheck endpoint (200 expected)",

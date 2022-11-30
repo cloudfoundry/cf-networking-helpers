@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"syscall"
 	"time"
@@ -51,7 +52,9 @@ var _ = Describe("Watchdog", func() {
 	})
 
 	JustBeforeEach(func() {
-		dog = watchdog.NewWatchdog("http://"+addr+"/healthz", "some-component", pollInterval, healthcheckTimeout, logger)
+		u, err := url.Parse("http://" + addr + "/healthz")
+		Expect(err).NotTo(HaveOccurred())
+		dog = watchdog.NewWatchdog(u, "some-component", pollInterval, healthcheckTimeout, logger)
 	})
 
 	AfterEach(func() {
