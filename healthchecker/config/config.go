@@ -27,6 +27,7 @@ var DefaultConfig = Config{
 
 type Config struct {
 	ComponentName              string              `yaml:"component_name"`
+	FailureCounterFile           string              `yaml:"failure_counter_file"`
 	HealthCheckEndpoint        HealthCheckEndpoint `yaml:"healthcheck_endpoint"`
 	HealthCheckPollInterval    time.Duration       `yaml:"healthcheck_poll_interval"`
 	HealthCheckTimeout         time.Duration       `yaml:"healthcheck_timeout"`
@@ -97,6 +98,10 @@ func (c *Config) Validate() error {
 		if c.HealthCheckEndpoint.Port != 0 {
 			return fmt.Errorf("Cannot specify both healthcheck endpoint port and socket")
 		}
+	}
+
+	if c.FailureCounterFile == "" {
+		return fmt.Errorf("Missing failure_counter_file")
 	}
 	return nil
 }

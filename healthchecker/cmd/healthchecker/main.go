@@ -52,7 +52,7 @@ func main() {
 		u.Host = fmt.Sprintf("unix%s", c.HealthCheckEndpoint.Socket)
 	}
 
-	w := watchdog.NewWatchdog(u, c.ComponentName, c.HealthCheckPollInterval, c.HealthCheckTimeout, logger)
+	w := watchdog.NewWatchdog(u, c.ComponentName, c.FailureCounterFile, c.HealthCheckPollInterval, c.HealthCheckTimeout, logger)
 	signals := make(chan os.Signal, SIGNAL_BUFFER_SIZE)
 	signal.Notify(signals, syscall.SIGUSR1)
 
