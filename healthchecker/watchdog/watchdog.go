@@ -29,7 +29,7 @@ type Watchdog struct {
 	failureCounter *FailureCounter
 }
 
-func NewWatchdog(u *url.URL, componentName string, failureCounterFile string, pollInterval time.Duration, healthcheckTimeout time.Duration, logger lager.Logger) *Watchdog {
+func NewWatchdog(u *url.URL, componentName string, failureCounterFileName string, pollInterval time.Duration, healthcheckTimeout time.Duration, logger lager.Logger) *Watchdog {
 	client := http.Client{
 		Timeout: healthcheckTimeout,
 	}
@@ -42,13 +42,20 @@ func NewWatchdog(u *url.URL, componentName string, failureCounterFile string, po
 		}
 	}
 
+	failureCounterFile, err := os.OpenFile(failureCounterFileName, os.O_RDONLY|os.O_CREATE, 0644)
+	if err != nil {
+		logger.Fatal("cannot-create-failure-counter-file", err)
+		return nil
+	}
+	failureCounterFile.Close()
+
 	return &Watchdog{
 		url:            u,
 		componentName:  componentName,
 		pollInterval:   pollInterval,
 		client:         client,
 		logger:         logger,
-		failureCounter: &FailureCounter{file: failureCounterFile},
+		failureCounter: &FailureCounter{file: failureCounterFileName, logger: logger},
 	}
 }
 
@@ -123,7 +130,8 @@ func (w *Watchdog) HitHealthcheckEndpoint() error {
 }
 
 type FailureCounter struct {
-	file string
+	file   string
+	logger lager.Logger
 }
 
 func (fc *FailureCounter) Set(i int) error {
@@ -138,7 +146,8 @@ func (fc *FailureCounter) Increment() error {
 
 	failuresInt, err := strconv.Atoi(strings.TrimSpace(string(failures)))
 	if err != nil {
-		return err
+		fc.logger.Info("converting-failure-counter-string-to-int", lager.Data{"error": err, "message": "Resetting counter to 0"})
+		failuresInt = 0
 	}
 
 	failuresInt++
