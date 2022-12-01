@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -20,14 +21,15 @@ const (
 )
 
 type Watchdog struct {
-	url           *url.URL
-	componentName string
-	pollInterval  time.Duration
-	client        http.Client
-	logger        lager.Logger
+	url            *url.URL
+	componentName  string
+	pollInterval   time.Duration
+	client         http.Client
+	logger         lager.Logger
+	failureCounter *FailureCounter
 }
 
-func NewWatchdog(u *url.URL, componentName string, pollInterval time.Duration, healthcheckTimeout time.Duration, logger lager.Logger) *Watchdog {
+func NewWatchdog(u *url.URL, componentName string, failureCounterFile string, pollInterval time.Duration, healthcheckTimeout time.Duration, logger lager.Logger) *Watchdog {
 	client := http.Client{
 		Timeout: healthcheckTimeout,
 	}
@@ -39,12 +41,14 @@ func NewWatchdog(u *url.URL, componentName string, pollInterval time.Duration, h
 			},
 		}
 	}
+
 	return &Watchdog{
-		url:           u,
-		componentName: componentName,
-		pollInterval:  pollInterval,
-		client:        client,
-		logger:        logger,
+		url:            u,
+		componentName:  componentName,
+		pollInterval:   pollInterval,
+		client:         client,
+		logger:         logger,
+		failureCounter: &FailureCounter{file: failureCounterFile},
 	}
 }
 
@@ -75,12 +79,20 @@ func (w *Watchdog) WatchHealthcheckEndpoint(ctx context.Context, signals <-chan 
 							return nil
 						}
 					default:
+						incrErr := w.failureCounter.Increment()
+						if incrErr != nil {
+							w.logger.Error("incrementing-failure-count", incrErr, lager.Data{"file": w.failureCounter.file})
+						}
 						return err
 					}
 				} else {
 					w.logger.Debug("Received error", lager.Data{"error": err.Error(), "attempt": errCounter})
 				}
 			} else {
+				err = w.failureCounter.Set(0)
+				if err != nil {
+					w.logger.Error("resetting-failure-count", err, lager.Data{"file": w.failureCounter.file})
+				}
 				errCounter = 0
 			}
 			pollTimer.Reset(w.pollInterval)
@@ -108,4 +120,27 @@ func (w *Watchdog) HitHealthcheckEndpoint() error {
 			response.StatusCode))
 	}
 	return nil
+}
+
+type FailureCounter struct {
+	file string
+}
+
+func (fc *FailureCounter) Set(i int) error {
+	return os.WriteFile(fc.file, []byte(fmt.Sprintf("%d\n", i)), 0644)
+}
+
+func (fc *FailureCounter) Increment() error {
+	failures, err := os.ReadFile(fc.file)
+	if err != nil {
+		return err
+	}
+
+	failuresInt, err := strconv.Atoi(strings.TrimSpace(string(failures)))
+	if err != nil {
+		return err
+	}
+
+	failuresInt++
+	return fc.Set(failuresInt)
 }

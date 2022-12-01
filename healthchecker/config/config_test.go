@@ -38,7 +38,8 @@ var _ = Describe("Config", func() {
 		Context("when values specified in config file", func() {
 			BeforeEach(func() {
 				cfgInFile = config.Config{
-					ComponentName: "healthchecker",
+					ComponentName:      "healthchecker",
+					FailureCounterFile: "/var/vcap/data/component/some-file.count",
 					HealthCheckEndpoint: config.HealthCheckEndpoint{
 						Host:     "some-host",
 						Port:     8888,
@@ -122,6 +123,18 @@ var _ = Describe("Config", func() {
 				})
 			})
 
+			Context("when failure_counter_file is empty", func() {
+				BeforeEach(func() {
+					cfgInFile.FailureCounterFile = ""
+				})
+
+				It("returns an error", func() {
+					_, err := config.LoadConfig(configFile.Name())
+					Expect(err).To(HaveOccurred())
+					Expect(err.Error()).To(ContainSubstring("Missing failure_counter_file"))
+				})
+			})
+
 			Context("when socket is not provided", func() {
 				Context("when host is empty", func() {
 					BeforeEach(func() {
@@ -152,7 +165,8 @@ var _ = Describe("Config", func() {
 		Context("when values with defaults are not provided", func() {
 			BeforeEach(func() {
 				cfgInFile = config.Config{
-					ComponentName: "healthchecker",
+					ComponentName:      "healthchecker",
+					FailureCounterFile: "/var/vcap/data/component/some-file.count",
 					HealthCheckEndpoint: config.HealthCheckEndpoint{
 						Host:     "some-host",
 						Port:     8888,

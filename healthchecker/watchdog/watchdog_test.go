@@ -15,6 +15,7 @@ import (
 	"code.cloudfoundry.org/lager/lagertest"
 	"github.com/onsi/ginkgo"
 	. "github.com/onsi/ginkgo"
+	"github.com/onsi/gomega"
 	. "github.com/onsi/gomega"
 )
 
@@ -26,6 +27,7 @@ var _ = Describe("Watchdog", func() {
 		pollInterval       time.Duration
 		healthcheckTimeout time.Duration
 		logger             lager.Logger
+		failureCounterFile *os.File
 	)
 
 	healthcheckTimeout = 5 * time.Millisecond
@@ -49,12 +51,15 @@ var _ = Describe("Watchdog", func() {
 		addr = fmt.Sprintf("localhost:%d", 9850+ginkgo.GinkgoParallelProcess())
 		pollInterval = 10 * time.Millisecond
 		logger = lagertest.NewTestLogger("watchdog")
+		var err error
+		failureCounterFile, err = os.CreateTemp("", "ginkgoWatchdogFailureCountFile.*")
+		Expect(err).NotTo(HaveOccurred())
 	})
 
 	JustBeforeEach(func() {
 		u, err := url.Parse("http://" + addr + "/healthz")
 		Expect(err).NotTo(HaveOccurred())
-		dog = watchdog.NewWatchdog(u, "some-component", pollInterval, healthcheckTimeout, logger)
+		dog = watchdog.NewWatchdog(u, "some-component", failureCounterFile.Name(), pollInterval, healthcheckTimeout, logger)
 	})
 
 	AfterEach(func() {
@@ -73,18 +78,21 @@ var _ = Describe("Watchdog", func() {
 				r.Close = true
 			})
 			srv = runServer(httpHandler)
+			err := os.WriteFile(failureCounterFile.Name(), []byte("8\n"), 0644)
+			Expect(err).NotTo(HaveOccurred())
 		})
-		It("does not return an error if the endpoint responds with a 200", func() {
+		It("does not return an error if the endpoint", func() {
 			statusCode = http.StatusOK
 			err := dog.HitHealthcheckEndpoint()
 			Expect(err).NotTo(HaveOccurred())
 		})
 
-		It("returns an error if the endpoint does not respond with a 200", func() {
-			statusCode = http.StatusServiceUnavailable
-
-			err := dog.HitHealthcheckEndpoint()
-			Expect(err).To(HaveOccurred())
+		Context("when endpoint does not respond with a 200", func() {
+			It("returns an error if the endpoint", func() {
+				statusCode = http.StatusServiceUnavailable
+				err := dog.HitHealthcheckEndpoint()
+				Expect(err).To(HaveOccurred())
+			})
 		})
 	})
 
@@ -93,6 +101,8 @@ var _ = Describe("Watchdog", func() {
 
 		BeforeEach(func() {
 			signals = make(chan os.Signal)
+			err := os.WriteFile(failureCounterFile.Name(), []byte("8\n"), 0644)
+			Expect(err).NotTo(HaveOccurred())
 		})
 
 		Context("the healthcheck passes repeatedly", func() {
@@ -110,6 +120,16 @@ var _ = Describe("Watchdog", func() {
 				defer cancel()
 				err := dog.WatchHealthcheckEndpoint(ctx, signals)
 				Expect(err).NotTo(HaveOccurred())
+			})
+			It("resets the value in failureCounterFile", func() {
+				ctx, cancel := context.WithTimeout(context.Background(), 10*pollInterval)
+				defer cancel()
+				dog.WatchHealthcheckEndpoint(ctx, signals)
+				Eventually(func(g gomega.Gomega) {
+					content, err := os.ReadFile(failureCounterFile.Name())
+					g.Expect(err).NotTo(HaveOccurred())
+					g.Expect(string(content)).To(Equal("0\n"))
+				}).Should(Succeed())
 			})
 		})
 
@@ -153,6 +173,12 @@ var _ = Describe("Watchdog", func() {
 				err := dog.WatchHealthcheckEndpoint(context.Background(), signals)
 				Expect(err).To(HaveOccurred())
 				Expect(retriesNum).To(Equal(3))
+			})
+			It("increments the failureCounterFile", func() {
+				dog.WatchHealthcheckEndpoint(context.Background(), signals)
+				content, err := os.ReadFile(failureCounterFile.Name())
+				Expect(err).NotTo(HaveOccurred())
+				Expect(string(content)).To(Equal("9\n"))
 			})
 		})
 

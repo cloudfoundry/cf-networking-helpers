@@ -27,15 +27,18 @@ var _ = Describe("HealthChecker", func() {
 	)
 
 	BeforeEach(func() {
+		failureCounterFile, err := os.CreateTemp("", "ginkgoWatchdogFailureCountFile.*")
+		Expect(err).NotTo(HaveOccurred())
+
 		cfg = config.Config{
 			ComponentName:              "healthchecker",
+			FailureCounterFile:         failureCounterFile.Name(),
 			LogLevel:                   "info",
 			StartupDelayBuffer:         1 * time.Millisecond,
 			StartResponseDelayInterval: 1 * time.Millisecond,
 			HealthCheckPollInterval:    1 * time.Millisecond,
 			HealthCheckTimeout:         1 * time.Millisecond,
 		}
-		var err error
 		binPath, err = gexec.Build("code.cloudfoundry.org/cf-networking-helpers/healthchecker/cmd/healthchecker", "-race")
 		Expect(err).NotTo(HaveOccurred())
 	})
