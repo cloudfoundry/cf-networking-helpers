@@ -59,6 +59,41 @@ var _ = Describe("Config", func() {
 				Expect(err).NotTo(HaveOccurred())
 				Expect(c).To(Equal(cfgInFile))
 			})
+
+			Context("when socket is provided", func() {
+				BeforeEach(func() {
+					cfgInFile.HealthCheckEndpoint.Socket = "/var/vcap/data/program/unix.sock"
+					cfgInFile.HealthCheckEndpoint.Host = ""
+					cfgInFile.HealthCheckEndpoint.Port = 0
+				})
+				Context("when host is provided", func() {
+					BeforeEach(func() {
+						cfgInFile.HealthCheckEndpoint.Host = "localhost"
+					})
+					It("throws an error when host is provided", func() {
+						_, err := config.LoadConfig(configFile.Name())
+						Expect(err).To(HaveOccurred())
+						Expect(err.Error()).To(ContainSubstring("Cannot specify both healthcheck endpoint host and socket"))
+
+					})
+				})
+				Context("when port is provided", func() {
+					BeforeEach(func() {
+						cfgInFile.HealthCheckEndpoint.Port = 1234
+					})
+					It("throws an error when port is provided", func() {
+						_, err := config.LoadConfig(configFile.Name())
+						Expect(err).To(HaveOccurred())
+						Expect(err.Error()).To(ContainSubstring("Cannot specify both healthcheck endpoint port and socket"))
+					})
+				})
+				It("loads values from the config file", func() {
+					c, err := config.LoadConfig(configFile.Name())
+					Expect(err).NotTo(HaveOccurred())
+					Expect(c).To(Equal(cfgInFile))
+
+				})
+			})
 		})
 
 		Context("when required properties are not provided", func() {
@@ -87,27 +122,29 @@ var _ = Describe("Config", func() {
 				})
 			})
 
-			Context("when host is empty", func() {
-				BeforeEach(func() {
-					cfgInFile.HealthCheckEndpoint.Host = ""
+			Context("when socket is not provided", func() {
+				Context("when host is empty", func() {
+					BeforeEach(func() {
+						cfgInFile.HealthCheckEndpoint.Host = ""
+					})
+
+					It("returns an error", func() {
+						_, err := config.LoadConfig(configFile.Name())
+						Expect(err).To(HaveOccurred())
+						Expect(err.Error()).To(ContainSubstring("Missing healthcheck endpoint host or socket"))
+					})
 				})
 
-				It("returns an error", func() {
-					_, err := config.LoadConfig(configFile.Name())
-					Expect(err).To(HaveOccurred())
-					Expect(err.Error()).To(ContainSubstring("Missing healthcheck endpoint host"))
-				})
-			})
+				Context("when port is empty", func() {
+					BeforeEach(func() {
+						cfgInFile.HealthCheckEndpoint.Port = 0
+					})
 
-			Context("when port is empty", func() {
-				BeforeEach(func() {
-					cfgInFile.HealthCheckEndpoint.Port = 0
-				})
-
-				It("returns an error", func() {
-					_, err := config.LoadConfig(configFile.Name())
-					Expect(err).To(HaveOccurred())
-					Expect(err.Error()).To(ContainSubstring("Missing healthcheck endpoint port"))
+					It("returns an error", func() {
+						_, err := config.LoadConfig(configFile.Name())
+						Expect(err).To(HaveOccurred())
+						Expect(err.Error()).To(ContainSubstring("Missing healthcheck endpoint port or socket"))
+					})
 				})
 			})
 		})
