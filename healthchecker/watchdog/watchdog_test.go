@@ -3,11 +3,9 @@ package watchdog_test
 import (
 	"context"
 	"fmt"
-	"net"
 	"net/http"
 	"net/url"
 	"os"
-	"syscall"
 	"time"
 
 	"code.cloudfoundry.org/cf-networking-helpers/healthchecker/watchdog"
@@ -32,7 +30,7 @@ var _ = Describe("Watchdog", func() {
 		u                  *url.URL
 	)
 
-	healthcheckTimeout = 5 * time.Millisecond
+	healthcheckTimeout = 500 * time.Millisecond
 	runServer := func(httpHandler http.Handler) *http.Server {
 		localSrv := http.Server{
 			Addr:    addr,
@@ -40,10 +38,12 @@ var _ = Describe("Watchdog", func() {
 		}
 		go func() {
 			defer GinkgoRecover()
-			localSrv.ListenAndServe()
+			err := localSrv.ListenAndServe()
+			Expect(err).To(HaveOccurred())
+			Expect(err).To(MatchError(http.ErrServerClosed))
 		}()
 		Eventually(func() error {
-			_, err := net.Dial("tcp", addr)
+			_, err := http.Get(fmt.Sprintf("http://%s", addr))
 			return err
 		}).Should(Not(HaveOccurred()))
 		return &localSrv
@@ -110,10 +110,8 @@ var _ = Describe("Watchdog", func() {
 					r.Close = true
 				})
 				srv = runServer(httpHandler)
-				err := os.WriteFile(failureCounterFile.Name(), []byte("8\n"), 0644)
-				Expect(err).NotTo(HaveOccurred())
 			})
-			It("does not return an error if the endpoint", func() {
+			It("does not return an error if the endpoint returns a 200", func() {
 				statusCode = http.StatusOK
 				err := dog.HitHealthcheckEndpoint()
 				Expect(err).NotTo(HaveOccurred())
@@ -192,6 +190,7 @@ var _ = Describe("Watchdog", func() {
 				var retriesNum int
 
 				BeforeEach(func() {
+					retriesNum = 0
 					httpHandler := http.NewServeMux()
 
 					httpHandler.HandleFunc("/healthz", func(rw http.ResponseWriter, r *http.Request) {
@@ -316,7 +315,7 @@ var _ = Describe("Watchdog", func() {
 				})
 			})
 
-			Context("received USR1 signal", func() {
+			Context("received the TEST_SIGNAL signal", func() {
 				var visitCount int
 
 				BeforeEach(func() {
@@ -327,7 +326,7 @@ var _ = Describe("Watchdog", func() {
 						visitCount++
 						if visitCount == 3 {
 							go func() {
-								signals <- syscall.SIGUSR1
+								signals <- TEST_SIGNAL
 							}()
 						}
 					})
@@ -341,14 +340,14 @@ var _ = Describe("Watchdog", func() {
 				})
 			})
 
-			Context("gorouter exited before we received USR1 signal", func() {
+			Context("gorouter exited before we received a TEST_SIGNAL signal", func() {
 				BeforeEach(func() {
 					httpHandler := http.NewServeMux()
 					httpHandler.HandleFunc("/healthz", func(rw http.ResponseWriter, r *http.Request) {
 						rw.WriteHeader(http.StatusServiceUnavailable)
 						r.Close = true
 						go func() {
-							signals <- syscall.SIGUSR1
+							signals <- TEST_SIGNAL
 						}()
 					})
 					srv = runServer(httpHandler)
