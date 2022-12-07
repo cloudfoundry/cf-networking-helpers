@@ -2,10 +2,36 @@ name: Go
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ develop, test-on-windows ]
 
 jobs:
-  test:
+  test-healthchecker-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get Go version from go.mod
+      run: |
+        go_version=$(cat go.mod | grep "^go" | cut -d ' ' -f 2)
+        echo "go_version=${go_version}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ env.go_version }}
+
+    - name: Build
+      run: go build -v ./healthchecker/...
+      shell: bash
+
+    - name: Test Healthchecker
+      run: ./scripts/test.sh ./healthchecker/...
+      env:
+        DB: none
+      shell: bash
+  test-everything-linux:
     runs-on: ubuntu-latest
 
     services:
