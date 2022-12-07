@@ -2,7 +2,7 @@ name: Go
 
 on:
   push:
-    branches: [ develop, test-on-windows ]
+    branches: [ develop ]
 
 jobs:
   test-healthchecker-windows:

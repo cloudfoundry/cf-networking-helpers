@@ -19,6 +19,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/square/certstrap v1.2.0
 	github.com/tedsuo/ifrit v0.0.0-20180802180643-bea94bb476cc
+	golang.org/x/sys v0.3.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -31,7 +32,6 @@ require (
 	github.com/mailru/easyjson v0.0.0-20180823135443-60711f1a8329 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
 	golang.org/x/net v0.2.0 // indirect
-	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
