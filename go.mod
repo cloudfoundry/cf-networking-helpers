@@ -19,7 +19,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/square/certstrap v1.2.0
 	github.com/tedsuo/ifrit v0.0.0-20180802180643-bea94bb476cc
-	golang.org/x/sys v0.3.0
+	golang.org/x/sys v0.4.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
