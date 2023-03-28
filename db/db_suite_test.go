@@ -3,9 +3,7 @@ package db_test
 import (
 	"math/rand"
 
-	ginkgoConfig "github.com/onsi/ginkgo/config"
-
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"testing"
@@ -17,5 +15,5 @@ func TestDb(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	rand.Seed(ginkgoConfig.GinkgoConfig.RandomSeed + int64(GinkgoParallelProcess()))
+	rand.Seed(GinkgoRandomSeed() + int64(GinkgoParallelProcess()))
 })
