@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"code.cloudfoundry.org/cf-networking-helpers/metrics"
-	"code.cloudfoundry.org/lager/lagertest"
+	"code.cloudfoundry.org/lager/v3/lagertest"
 
 	"github.com/cloudfoundry/sonde-go/events"
 	"github.com/gogo/protobuf/proto"
