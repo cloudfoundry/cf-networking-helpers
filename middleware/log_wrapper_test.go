@@ -7,8 +7,8 @@ import (
 
 	"code.cloudfoundry.org/cf-networking-helpers/middleware"
 	"code.cloudfoundry.org/cf-networking-helpers/middleware/fakes"
-	"code.cloudfoundry.org/lager"
-	"code.cloudfoundry.org/lager/lagertest"
+	"code.cloudfoundry.org/lager/v3"
+	"code.cloudfoundry.org/lager/v3/lagertest"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

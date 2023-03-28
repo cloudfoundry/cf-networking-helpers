@@ -7,7 +7,7 @@ import (
 
 	"code.cloudfoundry.org/cf-networking-helpers/db"
 	"code.cloudfoundry.org/cf-networking-helpers/fakes"
-	"code.cloudfoundry.org/lager/lagertest"
+	"code.cloudfoundry.org/lager/v3/lagertest"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
