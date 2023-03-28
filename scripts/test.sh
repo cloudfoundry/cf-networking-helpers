@@ -41,7 +41,7 @@ function bootDB {
   exit 1
 }
 
-go build -o "$BIN_DIR/ginkgo" github.com/onsi/ginkgo/ginkgo
+go build -o "$BIN_DIR/ginkgo" github.com/onsi/ginkgo/v2/ginkgo
 
 if [ "${1:-""}" = "" ]; then
   extraArgs=""
@@ -53,10 +53,10 @@ if [ "${DB:-"none"}" != "none" ]; then
   if [ "${DB_PORT:-"none"}" = "none" ]; then
     bootDB "${DB}"
   fi
-  ginkgo -r --race -randomizeAllSpecs ${extraArgs} db/timeouts
+  ginkgo -r --race -randomize-all ${extraArgs} db/timeouts
 else
   echo "skipping database"
   extraArgs="-skipPackage=db ${extraArgs}"
 fi
 
-ginkgo -r -p --race -randomizeAllSpecs -randomizeSuites -skipPackage=timeouts ${extraArgs}
+ginkgo -r -p --race -randomize-all -randomize-suites -skip-package=timeouts ${extraArgs}

@@ -9,7 +9,7 @@ import (
 	"code.cloudfoundry.org/cf-networking-helpers/fakes"
 	"code.cloudfoundry.org/lager/v3/lagertest"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
 )
