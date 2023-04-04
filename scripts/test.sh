@@ -53,10 +53,10 @@ if [ "${DB:-"none"}" != "none" ]; then
   if [ "${DB_PORT:-"none"}" = "none" ]; then
     bootDB "${DB}"
   fi
-  ginkgo -r --race -randomize-all ${extraArgs} db/timeouts
+  go run github.com/onsi/ginkgo/v2/ginkgo -r --race -randomize-all ${extraArgs} db/timeouts
 else
   echo "skipping database"
   extraArgs="--skip-package=db ${extraArgs}"
 fi
 
-ginkgo -r -p --race -randomize-all -randomize-suites -skip-package=timeouts ${extraArgs}
+go run github.com/onsi/ginkgo/v2/ginkgo -r -p --race -randomize-all -randomize-suites -skip-package=timeouts ${extraArgs}
