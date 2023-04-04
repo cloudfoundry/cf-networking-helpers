@@ -56,7 +56,7 @@ if [ "${DB:-"none"}" != "none" ]; then
   ginkgo -r --race -randomize-all ${extraArgs} db/timeouts
 else
   echo "skipping database"
-  extraArgs="-skipPackage=db ${extraArgs}"
+  extraArgs="--skip-package=db ${extraArgs}"
 fi
 
 ginkgo -r -p --race -randomize-all -randomize-suites -skip-package=timeouts ${extraArgs}
