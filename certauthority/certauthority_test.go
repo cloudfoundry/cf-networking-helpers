@@ -5,6 +5,7 @@ import (
 	"encoding/pem"
 	"io/ioutil"
 	"os"
+	"runtime"
 
 	"code.cloudfoundry.org/cf-networking-helpers/certauthority"
 	. "github.com/onsi/ginkgo/v2"
@@ -86,7 +87,11 @@ var _ = Describe("Cert Allocator", func() {
 		It("fails to initialize the authority", func() {
 			_, err = certauthority.NewCertAuthority(depotDir, "some-name")
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("no such file or directory"))
+			if runtime.GOOS == "windows" {
+				Expect(err.Error()).To(ContainSubstring("The system cannot find the path specified"))
+			} else {
+				Expect(err.Error()).To(ContainSubstring("no such file or directory"))
+			}
 		})
 	})
 })
