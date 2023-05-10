@@ -3,7 +3,6 @@ module code.cloudfoundry.org/cf-networking-helpers
 go 1.20
 
 require (
-	code.cloudfoundry.org/bbs v0.0.0-20181031172904-fa22f11221f9
 	code.cloudfoundry.org/lager/v3 v3.0.1
 	github.com/cloudfoundry/dropsonde v1.0.1-0.20230324134055-c6dd7c5e990e
 	github.com/cloudfoundry/sonde-go v0.0.0-20230323202738-86a2a74b11b0
