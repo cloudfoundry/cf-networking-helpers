@@ -23,9 +23,10 @@ func (fake *HTTPHandler) ServeHTTP(arg1 http.ResponseWriter, arg2 *http.Request)
 		arg1 http.ResponseWriter
 		arg2 *http.Request
 	}{arg1, arg2})
+	stub := fake.ServeHTTPStub
 	fake.recordInvocation("ServeHTTP", []interface{}{arg1, arg2})
 	fake.serveHTTPMutex.Unlock()
-	if fake.ServeHTTPStub != nil {
+	if stub != nil {
 		fake.ServeHTTPStub(arg1, arg2)
 	}
 }
@@ -36,10 +37,17 @@ func (fake *HTTPHandler) ServeHTTPCallCount() int {
 	return len(fake.serveHTTPArgsForCall)
 }
 
+func (fake *HTTPHandler) ServeHTTPCalls(stub func(http.ResponseWriter, *http.Request)) {
+	fake.serveHTTPMutex.Lock()
+	defer fake.serveHTTPMutex.Unlock()
+	fake.ServeHTTPStub = stub
+}
+
 func (fake *HTTPHandler) ServeHTTPArgsForCall(i int) (http.ResponseWriter, *http.Request) {
 	fake.serveHTTPMutex.RLock()
 	defer fake.serveHTTPMutex.RUnlock()
-	return fake.serveHTTPArgsForCall[i].arg1, fake.serveHTTPArgsForCall[i].arg2
+	argsForCall := fake.serveHTTPArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
 }
 
 func (fake *HTTPHandler) Invocations() map[string][][]interface{} {

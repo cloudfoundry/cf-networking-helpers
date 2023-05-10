@@ -8,8 +8,9 @@ import (
 type UUIDGenerator struct {
 	GenerateUUIDStub        func() (string, error)
 	generateUUIDMutex       sync.RWMutex
-	generateUUIDArgsForCall []struct{}
-	generateUUIDReturns     struct {
+	generateUUIDArgsForCall []struct {
+	}
+	generateUUIDReturns struct {
 		result1 string
 		result2 error
 	}
@@ -24,16 +25,19 @@ type UUIDGenerator struct {
 func (fake *UUIDGenerator) GenerateUUID() (string, error) {
 	fake.generateUUIDMutex.Lock()
 	ret, specificReturn := fake.generateUUIDReturnsOnCall[len(fake.generateUUIDArgsForCall)]
-	fake.generateUUIDArgsForCall = append(fake.generateUUIDArgsForCall, struct{}{})
+	fake.generateUUIDArgsForCall = append(fake.generateUUIDArgsForCall, struct {
+	}{})
+	stub := fake.GenerateUUIDStub
+	fakeReturns := fake.generateUUIDReturns
 	fake.recordInvocation("GenerateUUID", []interface{}{})
 	fake.generateUUIDMutex.Unlock()
-	if fake.GenerateUUIDStub != nil {
-		return fake.GenerateUUIDStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	return fake.generateUUIDReturns.result1, fake.generateUUIDReturns.result2
+	return fakeReturns.result1, fakeReturns.result2
 }
 
 func (fake *UUIDGenerator) GenerateUUIDCallCount() int {
@@ -42,7 +46,15 @@ func (fake *UUIDGenerator) GenerateUUIDCallCount() int {
 	return len(fake.generateUUIDArgsForCall)
 }
 
+func (fake *UUIDGenerator) GenerateUUIDCalls(stub func() (string, error)) {
+	fake.generateUUIDMutex.Lock()
+	defer fake.generateUUIDMutex.Unlock()
+	fake.GenerateUUIDStub = stub
+}
+
 func (fake *UUIDGenerator) GenerateUUIDReturns(result1 string, result2 error) {
+	fake.generateUUIDMutex.Lock()
+	defer fake.generateUUIDMutex.Unlock()
 	fake.GenerateUUIDStub = nil
 	fake.generateUUIDReturns = struct {
 		result1 string
@@ -51,6 +63,8 @@ func (fake *UUIDGenerator) GenerateUUIDReturns(result1 string, result2 error) {
 }
 
 func (fake *UUIDGenerator) GenerateUUIDReturnsOnCall(i int, result1 string, result2 error) {
+	fake.generateUUIDMutex.Lock()
+	defer fake.generateUUIDMutex.Unlock()
 	fake.GenerateUUIDStub = nil
 	if fake.generateUUIDReturnsOnCall == nil {
 		fake.generateUUIDReturnsOnCall = make(map[int]struct {
