@@ -8,7 +8,7 @@ code.cloudfoundry.org/lager/v3/lagertest
 ## explicit; go 1.17
 filippo.io/edwards25519
 filippo.io/edwards25519/field
-# github.com/cloudfoundry/dropsonde v1.0.1-0.20230324134055-c6dd7c5e990e
+# github.com/cloudfoundry/dropsonde v1.1.0
 ## explicit; go 1.18
 github.com/cloudfoundry/dropsonde/emitter/fake
 github.com/cloudfoundry/dropsonde/metric_sender
