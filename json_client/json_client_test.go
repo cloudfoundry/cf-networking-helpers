@@ -61,6 +61,13 @@ var _ = Describe("JsonClient", func() {
 		httpClient.DoReturns(returnedResponse, nil)
 	})
 
+	Describe("CloseIdleConnections", func() {
+		It("closes idle connections on its http client", func() {
+			jsonClient.CloseIdleConnections()
+			Expect(httpClient.CloseIdleConnectionsCallCount()).To(Equal(1))
+		})
+	})
+
 	Describe("Do", func() {
 		It("makes non-GET requests with the given body", func() {
 			err := jsonClient.Do(method, route, reqData, &respData, token)
