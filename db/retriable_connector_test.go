@@ -60,7 +60,8 @@ var _ = Describe("RetriableConnector", func() {
 		It("retries the connection", func() {
 			retriableConnector.MaxRetries = 5
 
-			ctx, _ := context.WithTimeout(context.Background(), 1*time.Second)
+			ctx, cancelFunc := context.WithTimeout(context.Background(), 1*time.Second)
+			defer cancelFunc()
 			_, err := retriableConnector.GetConnectionPool(db.Config{}, ctx)
 
 			Expect(numTries).To(Equal(4))

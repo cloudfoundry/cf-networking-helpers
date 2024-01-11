@@ -22,9 +22,10 @@ var testTimeoutInSeconds = float64(5)
 
 var _ = Describe("Timeout", func() {
 	var (
-		dbConf   db.Config
-		ctx      context.Context
-		database *db.ConnWrapper
+		dbConf     db.Config
+		ctx        context.Context
+		cancelFunc context.CancelFunc
+		database   *db.ConnWrapper
 	)
 	dbConf = testsupport.GetDBConfig()
 
@@ -132,7 +133,7 @@ var _ = Describe("Timeout", func() {
 
 		Context("when the read timeout is greater than the context timeout and the database is unreachable", func() {
 			BeforeEach(func() {
-				ctx, _ = context.WithTimeout(context.Background(), 2*time.Second)
+				ctx, cancelFunc = context.WithTimeout(context.Background(), 2*time.Second)
 				dbConf.Timeout = 3
 				testsupport.CreateDatabase(dbConf)
 
@@ -149,6 +150,7 @@ var _ = Describe("Timeout", func() {
 
 			AfterEach(func() {
 				unblockPort(dbConf.Port)
+				cancelFunc()
 			})
 
 			Describe("QueryRowContext", func() {
@@ -211,8 +213,9 @@ var _ = Describe("Timeout", func() {
 
 			Context("when the context deadline is smaller than the connection string timeouts", func() {
 				BeforeEach(func() {
-					ctx, _ = context.WithTimeout(context.Background(), 500*time.Millisecond)
+					ctx, cancelFunc = context.WithTimeout(context.Background(), 500*time.Millisecond)
 				})
+
 				Describe("QueryRowContext", func() {
 					expectContextDeadlineExceeded(queryRowContext)
 				})
