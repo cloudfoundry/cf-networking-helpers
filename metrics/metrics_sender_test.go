@@ -8,10 +8,10 @@ import (
 	"code.cloudfoundry.org/lager/v3/lagertest"
 
 	"github.com/cloudfoundry/sonde-go/events"
-	"google.golang.org/protobuf/proto"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
+	"google.golang.org/protobuf/proto"
 )
 
 var _ = Describe("Metrics Sender", func() {
