@@ -35,7 +35,8 @@ var _ = Describe("GetConnectionPool", func() {
 	})
 
 	It("times out when the context hits the deadline", func() {
-		zeroTimeoutCtx, _ := context.WithTimeout(context.Background(), 0*time.Second)
+		zeroTimeoutCtx, cancelFunc := context.WithTimeout(context.Background(), 0*time.Second)
+		defer cancelFunc()
 		_, err := db.GetConnectionPool(dbConf, zeroTimeoutCtx)
 		Expect(err).To(MatchError("unable to ping: context deadline exceeded"))
 	})
