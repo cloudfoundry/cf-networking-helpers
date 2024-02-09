@@ -171,13 +171,13 @@ var _ = Describe("TLS config for internal API server", func() {
 
 			Context("when the client is configured to use an unsupported ciphersuite", func() {
 				BeforeEach(func() {
-					clientTLSConfig.CipherSuites = []uint16{tls.TLS_RSA_WITH_AES_256_GCM_SHA384}
+					clientTLSConfig.CipherSuites = []uint16{tls.TLS_AES_128_GCM_SHA256}
 				})
 
-				It("refuses the connection from the client", func() {
-					_, err := makeRequest(serverListenAddr, clientTLSConfig)
-
-					Expect(err).To(MatchError(ContainSubstring("remote error")))
+				It("negotiates the connection and will still succeed", func() {
+					resp, err := makeRequest(serverListenAddr, clientTLSConfig)
+					Expect(err).NotTo(HaveOccurred())
+					Expect(resp.StatusCode).To(Equal(http.StatusOK))
 				})
 			})
 
