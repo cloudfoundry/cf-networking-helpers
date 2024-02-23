@@ -5,7 +5,7 @@ go 1.20
 require (
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/cloudfoundry/dropsonde v1.1.0
-	github.com/cloudfoundry/sonde-go v0.0.0-20231227232801-b682ba3cb37d
+	github.com/cloudfoundry/sonde-go v0.0.0-20240222182100-131c0f5c3247
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.9
