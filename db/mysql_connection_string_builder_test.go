@@ -147,6 +147,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 
 			BeforeEach(func() {
 				caCertFile, err := ioutil.TempFile("", "")
+				Expect(err).ToNot(HaveOccurred())
 				_, err = caCertFile.Write([]byte(DATABASE_CA_CERT))
 				Expect(err).NotTo(HaveOccurred())
 
@@ -205,6 +206,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 			Context("when it can't append the ca cert to the cert pool", func() {
 				BeforeEach(func() {
 					caCertFile, err := ioutil.TempFile("", "")
+					Expect(err).ToNot(HaveOccurred())
 					_, err = caCertFile.Write([]byte("bad cert"))
 					Expect(err).NotTo(HaveOccurred())
 
