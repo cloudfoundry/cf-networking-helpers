@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -73,7 +73,7 @@ var _ = Describe("TLS config for internal API server", func() {
 			resp, err := makeRequest(serverListenAddr, clientTLSConfig)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(resp.StatusCode).To(Equal(http.StatusOK))
-			respBytes, err := ioutil.ReadAll(resp.Body)
+			respBytes, err := io.ReadAll(resp.Body)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(respBytes).To(Equal([]byte("hello")))
 			Expect(resp.Body.Close()).To(Succeed())
@@ -131,7 +131,7 @@ var _ = Describe("TLS config for internal API server", func() {
 
 			Context("when the client has been configured with the wrong CA for the server", func() {
 				BeforeEach(func() {
-					wrongServerCACert, err := ioutil.ReadFile(paths.ClientCACertPath)
+					wrongServerCACert, err := os.ReadFile(paths.ClientCACertPath)
 					Expect(err).NotTo(HaveOccurred())
 
 					clientCertPool := x509.NewCertPool()

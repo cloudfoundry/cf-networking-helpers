@@ -4,7 +4,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
-	"io/ioutil"
+	"os"
 
 	"code.cloudfoundry.org/cf-networking-helpers/db"
 	"code.cloudfoundry.org/cf-networking-helpers/fakes"
@@ -146,7 +146,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 			)
 
 			BeforeEach(func() {
-				caCertFile, err := ioutil.TempFile("", "")
+				caCertFile, err := os.CreateTemp("", "")
 				Expect(err).ToNot(HaveOccurred())
 				_, err = caCertFile.Write([]byte(DATABASE_CA_CERT))
 				Expect(err).NotTo(HaveOccurred())
@@ -205,7 +205,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 
 			Context("when it can't append the ca cert to the cert pool", func() {
 				BeforeEach(func() {
-					caCertFile, err := ioutil.TempFile("", "")
+					caCertFile, err := os.CreateTemp("", "")
 					Expect(err).ToNot(HaveOccurred())
 					_, err = caCertFile.Write([]byte("bad cert"))
 					Expect(err).NotTo(HaveOccurred())

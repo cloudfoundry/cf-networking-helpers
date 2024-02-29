@@ -1,7 +1,7 @@
 package db_test
 
 import (
-	"io/ioutil"
+	"os"
 
 	"code.cloudfoundry.org/cf-networking-helpers/db"
 
@@ -149,7 +149,7 @@ var _ = Describe("Config", func() {
 
 				Context("success", func() {
 					BeforeEach(func() {
-						caCertFile, err := ioutil.TempFile("", "")
+						caCertFile, err := os.CreateTemp("", "")
 						Expect(err).NotTo(HaveOccurred())
 
 						_, err = caCertFile.Write([]byte(DATABASE_CA_CERT))
@@ -179,7 +179,7 @@ var _ = Describe("Config", func() {
 
 				Context("when adding the cert to the pool fails", func() {
 					BeforeEach(func() {
-						caCertFile, err := ioutil.TempFile("", "")
+						caCertFile, err := os.CreateTemp("", "")
 						Expect(err).NotTo(HaveOccurred())
 
 						_, err = caCertFile.Write([]byte("garbage"))

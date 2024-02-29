@@ -2,7 +2,6 @@ package mutualtls_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"math/rand"
 	"os"
 
@@ -33,7 +32,7 @@ type testPaths struct {
 
 var _ = SynchronizedBeforeSuite(func() []byte {
 	var err error
-	certDir, err = ioutil.TempDir("", "test-certs")
+	certDir, err = os.MkdirTemp("", "test-certs")
 	Expect(err).NotTo(HaveOccurred())
 
 	certWriter, err := testsupport.NewCertWriter(certDir)

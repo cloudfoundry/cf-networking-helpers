@@ -3,17 +3,18 @@ package lagerlevel_test
 import (
 	. "code.cloudfoundry.org/cf-networking-helpers/lagerlevel"
 
-	"code.cloudfoundry.org/cf-networking-helpers/testsupport/ports"
-	"code.cloudfoundry.org/lager/v3"
-	"code.cloudfoundry.org/lager/v3/lagertest"
 	"fmt"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
-	"github.com/tedsuo/ifrit"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+
+	"code.cloudfoundry.org/cf-networking-helpers/testsupport/ports"
+	"code.cloudfoundry.org/lager/v3"
+	"code.cloudfoundry.org/lager/v3/lagertest"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	"github.com/tedsuo/ifrit"
 )
 
 var _ = Describe("Server", func() {
