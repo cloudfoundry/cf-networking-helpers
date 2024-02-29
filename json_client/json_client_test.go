@@ -3,7 +3,7 @@ package json_client_test
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -49,7 +49,7 @@ var _ = Describe("JsonClient", func() {
 
 		returnedResponse = &http.Response{
 			StatusCode: 200,
-			Body: ioutil.NopCloser(strings.NewReader(`{
+			Body: io.NopCloser(strings.NewReader(`{
 				"some-key" : "some-value"
 			}`)),
 		}
@@ -78,7 +78,7 @@ var _ = Describe("JsonClient", func() {
 			Expect(receivedRequest.Method).To(Equal("POST"))
 			Expect(receivedRequest.URL.Host).To(Equal("some.url"))
 			Expect(receivedRequest.URL.Path).To(Equal("/some/route"))
-			bodyBytes, err := ioutil.ReadAll(receivedRequest.Body)
+			bodyBytes, err := io.ReadAll(receivedRequest.Body)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(bodyBytes).To(MatchJSON(`{"request":"data"}`))
 
@@ -186,7 +186,7 @@ var _ = Describe("JsonClient", func() {
 		Context("when the request returns a non 2xx status code", func() {
 			Context("when the returned body is valid JSON", func() {
 				BeforeEach(func() {
-					returnedResponse.Body = ioutil.NopCloser(strings.NewReader(`{"error":"some-error"}`))
+					returnedResponse.Body = io.NopCloser(strings.NewReader(`{"error":"some-error"}`))
 					returnedResponse.StatusCode = http.StatusBadRequest
 					httpClient.DoReturns(returnedResponse, nil)
 				})
@@ -210,7 +210,7 @@ var _ = Describe("JsonClient", func() {
 			})
 			Context("when the returned body is not valid JSON", func() {
 				BeforeEach(func() {
-					returnedResponse.Body = ioutil.NopCloser(strings.NewReader("not-json-error"))
+					returnedResponse.Body = io.NopCloser(strings.NewReader("not-json-error"))
 					returnedResponse.StatusCode = http.StatusBadRequest
 					httpClient.DoReturns(returnedResponse, nil)
 				})
