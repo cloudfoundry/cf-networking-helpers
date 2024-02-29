@@ -12,6 +12,7 @@ type metricsSender interface {
 	IncrementCounter(string)
 }
 
+//lint:ignore U1000 - this  is used in metrics_wrapper_test.go
 //go:generate counterfeiter -o fakes/http_handler.go --fake-name HTTPHandler . http_handler
 type http_handler interface {
 	http.Handler
