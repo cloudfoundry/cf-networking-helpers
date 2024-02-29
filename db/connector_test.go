@@ -3,7 +3,6 @@ package db_test
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"time"
 
 	"code.cloudfoundry.org/cf-networking-helpers/db"
@@ -20,7 +19,7 @@ var _ = Describe("GetConnectionPool", func() {
 
 	BeforeEach(func() {
 		dbConf = testsupport.GetDBConfig()
-		dbConf.DatabaseName = fmt.Sprintf("test_%x", rand.Int())
+		dbConf.DatabaseName = fmt.Sprintf("test_%x", randomGenerator.Int())
 		testsupport.CreateDatabase(dbConf)
 	})
 

@@ -14,6 +14,7 @@ func TestDb(t *testing.T) {
 	RunSpecs(t, "DB Suite")
 }
 
+var RandomGenerator *rand.Rand
 var _ = BeforeSuite(func() {
-	rand.Seed(GinkgoRandomSeed() + int64(GinkgoParallelProcess()))
+	randomGenerator = rand.New(rand.NewSource(GinkgoRandomSeed() + int64(GinkgoParallelProcess())))
 })
