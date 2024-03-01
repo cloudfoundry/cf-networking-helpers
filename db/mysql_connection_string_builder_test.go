@@ -168,6 +168,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 				passedTLSConfigName, passedTLSConfig := mySQLAdapter.RegisterTLSConfigArgsForCall(0)
 				Expect(passedTLSConfigName).To(Equal("some-database-tls"))
 				Expect(passedTLSConfig.InsecureSkipVerify).To(Equal(false))
+				//lint:ignore SA1019 - ignoring tlsCert.RootCAs.Subjects is deprecated ERR because cert does not come from SystemCertPool.
 				Expect(passedTLSConfig.RootCAs.Subjects()).To(Equal(caCertPool.Subjects()))
 			})
 
@@ -185,6 +186,7 @@ var _ = Describe("MySQLConnectionStringBuilder", func() {
 					passedTLSConfigName, passedTLSConfig := mySQLAdapter.RegisterTLSConfigArgsForCall(0)
 					Expect(passedTLSConfigName).To(Equal("some-database-tls"))
 					Expect(passedTLSConfig.InsecureSkipVerify).To(BeTrue())
+					//lint:ignore SA1019 - ignoring tlsCert.RootCAs.Subjects is deprecated ERR because cert does not come from SystemCertPool.
 					Expect(passedTLSConfig.RootCAs.Subjects()).To(Equal(caCertPool.Subjects()))
 					Expect(passedTLSConfig.Certificates).To(BeNil())
 					// impossible to assert VerifyPeerCertificate is set to a specfic function
