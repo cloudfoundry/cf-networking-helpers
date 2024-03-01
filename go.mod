@@ -23,10 +23,10 @@ require (
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240207164012-fb44976bdcd5 // indirect
+	github.com/google/pprof v0.0.0-20240227163752-401108e1b7e7 // indirect
 	github.com/openzipkin/zipkin-go v0.4.2 // indirect
 	go.step.sm/crypto v0.43.1 // indirect
-	golang.org/x/crypto v0.19.0 // indirect
+	golang.org/x/crypto v0.20.0 // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
