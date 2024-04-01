@@ -1,7 +1,5 @@
-# cf-networking-helpers
----
-
-## Contributor License Agreement
+Contributor License Agreement
+---------------
 
 Follow these steps to make a contribution to any of our open source repositories:
 
@@ -30,35 +28,28 @@ When the project receives a new CLA, it is recorded in the project records, the 
 automated system uses, then we manually make the Pull Request as having a CLA on-file.
 
 
-----
+Initial Setup
+---------------
+- Install docker
 
-## Initial Setup
+- Add required directories
 
-In order to run the test, docker is required to be installed. All tests are
-running against a recent version of Go.
+```bash
+# create parent directory
+mkdir -p ~/workspace
+cd ~/workspace
 
-## Running SQL Tests
+# clone ci
+git clone https://github.com/cloudfoundry/wg-app-platform-runtime-ci.git
 
-### MySQL 5.7
-
-```
-DB=mysql ./scripts/docker-test
-```
-
-### MySQL 8
-
-```
-DB=mysql8 ./scripts/docker-test
+# clone repo
+git clone https://github.com/cloudfoundry/<THIS_REPO>.git --recursive
+cd <THIS_REPO>
 ```
 
-### Postgres
+Running Tests
+---------------
 
-```
-DB=postgres ./scripts/docker-test
-```
-
-### Interactive Docker container
-
-```
-./scripts/docker-shell
-```
+- `./scripts/create-docker-container.bash`: This will create a docker container with appropriate mounts.
+- `./scripts/test-in-docker-locally.bash`: Create docker container and run all tests and setup in a single script.
+  - `./scripts/test-in-docker-locally.bash <package> <sub-package>`: For running tests under a specific package and/or sub-package
