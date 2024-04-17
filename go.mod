@@ -25,7 +25,7 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/pprof v0.0.0-20240416155748-26353dc0451f // indirect
 	github.com/openzipkin/zipkin-go v0.4.2 // indirect
-	go.step.sm/crypto v0.44.5 // indirect
+	go.step.sm/crypto v0.44.6 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sys v0.19.0 // indirect
