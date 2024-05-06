@@ -15,7 +15,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/square/certstrap v1.3.0
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
-	google.golang.org/protobuf v1.34.0
+	google.golang.org/protobuf v1.34.1
 )
 
 require (
@@ -26,8 +26,8 @@ require (
 	github.com/google/pprof v0.0.0-20240430035430-e4905b036c4e // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
 	go.step.sm/crypto v0.44.8 // indirect
-	golang.org/x/crypto v0.22.0 // indirect
-	golang.org/x/net v0.24.0 // indirect
+	golang.org/x/crypto v0.23.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/tools v0.20.0 // indirect
