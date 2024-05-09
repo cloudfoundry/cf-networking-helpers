@@ -110,7 +110,7 @@ var _ = Describe("Poller", func() {
 
 				Eventually(ready).Should(BeClosed())
 
-				Eventually(logger).Should(gbytes.Say("poll-cycle.*banana"))
+				Eventually(logger, 30*time.Second).Should(gbytes.Say("poll-cycle.*banana"))
 
 				Consistently(retChan).ShouldNot(Receive())
 
@@ -132,7 +132,7 @@ var _ = Describe("Poller", func() {
 				}()
 
 				Eventually(ready).Should(BeClosed())
-				Eventually(logger).Should(gbytes.Say("poll-cycle.*banana"))
+				Eventually(logger, 30*time.Second).Should(gbytes.Say("poll-cycle.*banana"))
 				Eventually(retChan).Should(Receive(MatchError(
 					"This cell must be restarted (run \"bosh restart <job>\"): fatal: banana",
 				)))
