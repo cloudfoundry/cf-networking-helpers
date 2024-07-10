@@ -1,6 +1,8 @@
 module code.cloudfoundry.org/cf-networking-helpers
 
-go 1.20
+go 1.21
+
+toolchain go1.22.3
 
 require (
 	code.cloudfoundry.org/lager/v3 v3.0.3
@@ -25,7 +27,7 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/pprof v0.0.0-20240625030939-27f56978b8b0 // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
-	go.step.sm/crypto v0.48.1 // indirect
+	go.step.sm/crypto v0.49.0 // indirect
 	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/sys v0.22.0 // indirect
