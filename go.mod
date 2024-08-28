@@ -12,8 +12,8 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
-	github.com/onsi/ginkgo/v2 v2.20.1
-	github.com/onsi/gomega v1.34.1
+	github.com/onsi/ginkgo/v2 v2.20.2
+	github.com/onsi/gomega v1.34.2
 	github.com/pkg/errors v0.9.1
 	github.com/square/certstrap v1.3.0
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
@@ -29,7 +29,6 @@ require (
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
 	go.step.sm/crypto v0.51.1 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
-	golang.org/x/exp v0.0.0-20240823005443-9b4947da3948 // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/sys v0.24.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
