@@ -1,6 +1,9 @@
 package lagerlevel_test
 
 import (
+	"bufio"
+	"net"
+
 	. "code.cloudfoundry.org/cf-networking-helpers/lagerlevel"
 
 	"fmt"
@@ -31,7 +34,7 @@ var _ = Describe("Server", func() {
 		port = ports.PickAPort()
 		sink = lager.NewReconfigurableSink(testLogger, lager.ERROR)
 
-		server = NewServer("localhost", port, sink, testLogger)
+		server = NewServer("localhost", port, 200*time.Millisecond, sink, testLogger)
 	})
 
 	Context("when it starts", func() {
@@ -63,6 +66,37 @@ var _ = Describe("Server", func() {
 			Expect(response.StatusCode).To(Equal(http.StatusBadRequest))
 			Expect(sink.GetMinLevel()).To(Equal(lager.ERROR))
 			Expect(testLogger.LogMessages()).To(ContainElement("test.Invalid log level requested: `error`. Skipping."))
+		})
+
+		Context("when request header write times out", func() {
+			It("closes the request", func() {
+				var conn net.Conn
+				var err error
+				Eventually(func() error {
+					conn, err = net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", port))
+					return err
+				}).Should(BeNil())
+				defer conn.Close()
+
+				writer := bufio.NewWriter(conn)
+
+				fmt.Fprintf(writer, "POST /log-level HTTP/1.1\r\n")
+
+				// started writing headers
+				fmt.Fprintf(writer, "Host: localhost\r\n")
+				writer.Flush()
+
+				time.Sleep(300 * time.Millisecond)
+
+				// done
+				fmt.Fprintf(writer, "\r\n")
+				writer.Flush()
+
+				resp := bufio.NewReader(conn)
+				_, err = resp.ReadString('\n')
+				Expect(err).To(HaveOccurred())
+				Expect(err.Error()).To(Equal("EOF"))
+			})
 		})
 	})
 
