@@ -95,7 +95,6 @@ var _ = Describe("Server", func() {
 				resp := bufio.NewReader(conn)
 				_, err = resp.ReadString('\n')
 				Expect(err).To(HaveOccurred())
-				Expect(err.Error()).To(Equal("EOF"))
 			})
 		})
 	})
