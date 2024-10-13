@@ -1,4 +1,4 @@
-# code.cloudfoundry.org/lager/v3 v3.8.0
+# code.cloudfoundry.org/lager/v3 v3.9.0
 ## explicit; go 1.22.0
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
@@ -13,7 +13,7 @@ filippo.io/edwards25519/field
 github.com/cloudfoundry/dropsonde/emitter/fake
 github.com/cloudfoundry/dropsonde/metric_sender
 github.com/cloudfoundry/dropsonde/metrics
-# github.com/cloudfoundry/sonde-go v0.0.0-20240807231527-361c7ad33dc7
+# github.com/cloudfoundry/sonde-go v0.0.0-20241007161526-e3ce7aa1aabc
 ## explicit; go 1.18
 github.com/cloudfoundry/sonde-go/events
 # github.com/go-logr/logr v1.4.2
@@ -33,7 +33,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20241001023024-f4c0cfd0cf1d
+# github.com/google/pprof v0.0.0-20241009165004-a3522334989c
 ## explicit; go 1.22
 github.com/google/pprof/profile
 # github.com/jmoiron/sqlx v1.4.0
@@ -101,7 +101,7 @@ github.com/tedsuo/ifrit
 github.com/tedsuo/ifrit/grouper
 github.com/tedsuo/ifrit/http_server
 github.com/tedsuo/ifrit/sigmon
-# go.step.sm/crypto v0.53.0
+# go.step.sm/crypto v0.54.0
 ## explicit; go 1.22
 go.step.sm/crypto/fingerprint
 go.step.sm/crypto/internal/bcrypt_pbkdf
@@ -158,8 +158,8 @@ golang.org/x/text/transform
 ## explicit; go 1.22.0
 golang.org/x/tools/cover
 golang.org/x/tools/go/ast/inspector
-# google.golang.org/protobuf v1.34.2
-## explicit; go 1.20
+# google.golang.org/protobuf v1.35.1
+## explicit; go 1.21
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
 google.golang.org/protobuf/internal/descfmt
