@@ -46,6 +46,39 @@ var _ = Describe("Portallocator", func() {
 			Expect(err).To(MatchError("insufficient ports available"))
 		})
 	})
+	Context("bounds checking for ClaimPort()", func() {
+		BeforeEach(func() {
+			allocator, err = portauthority.New(65530, 65535)
+			Expect(err).NotTo(HaveOccurred())
+		})
+		Context("when the allocator is requested more ports than can be possible", func() {
+			It("errors", func() {
+				_, err := allocator.ClaimPorts(65536)
+				Expect(err).To(MatchError("number of ports requested must be between 1-65535"))
+			})
+
+		})
+		Context("when the allocator is requested for 0 ports", func() {
+			It("errors", func() {
+				_, err := allocator.ClaimPorts(0)
+				Expect(err).To(MatchError("number of ports requested must be between 1-65535"))
+			})
+
+		})
+		Context("when the allocator is requested for negative ports", func() {
+			It("errors", func() {
+				_, err := allocator.ClaimPorts(-1)
+				Expect(err).To(MatchError("number of ports requested must be between 1-65535"))
+			})
+		})
+
+		Context("when the allocator is requested for a numbef of ports that would wrap-around", func() {
+			It("errors", func() {
+				_, err := allocator.ClaimPorts(7)
+				Expect(err).To(MatchError("too many ports requested, will exceed maximum port of 65535"))
+			})
+		})
+	})
 
 	Context("when ClaimPorts is asked for more than one port", func() {
 		BeforeEach(func() {
@@ -72,10 +105,46 @@ var _ = Describe("Portallocator", func() {
 		})
 	})
 
-	Context("when a range outside the port spec is requested", func() {
+	Context("when a start port is too high", func() {
+		It("errors", func() {
+			allocator, err = portauthority.New(65536, 30)
+			Expect(err).To(MatchError("Invalid port range requested. Ports can only be numbers between 1-65535"))
+		})
+	})
+	Context("when a end port is too high", func() {
 		It("errors", func() {
 			allocator, err = portauthority.New(30, 65536)
-			Expect(err).To(MatchError("Invalid port range requested. Ports can only be numbers between 0-65535"))
+			Expect(err).To(MatchError("Invalid port range requested. Ports can only be numbers between 1-65535"))
+		})
+	})
+	Context("when a negative start port is requested", func() {
+		It("errors", func() {
+			allocator, err = portauthority.New(-1, 30)
+			Expect(err).To(MatchError("Invalid port range requested. Ports can only be numbers between 1-65535"))
+		})
+	})
+	Context("when a negative end port is requested", func() {
+		It("errors", func() {
+			allocator, err = portauthority.New(1, -1)
+			Expect(err).To(MatchError("Invalid port range requested. Ports can only be numbers between 1-65535"))
+		})
+	})
+	Context("when a 0 start port is requested", func() {
+		It("errors", func() {
+			allocator, err = portauthority.New(0, 1)
+			Expect(err).To(MatchError("Invalid port range requested. Ports can only be numbers between 1-65535"))
+		})
+	})
+	Context("when a 0 end port is requested", func() {
+		It("errors", func() {
+			allocator, err = portauthority.New(1, 0)
+			Expect(err).To(MatchError("Invalid port range requested. Ports can only be numbers between 1-65535"))
+		})
+	})
+	Context("when an end port is lower than start port", func() {
+		It("errors", func() {
+			allocator, err = portauthority.New(30, 10)
+			Expect(err).To(MatchError("Invalid port range requested. Starting port must be < ending port"))
 		})
 	})
 })
