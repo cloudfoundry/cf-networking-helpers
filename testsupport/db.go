@@ -92,14 +92,17 @@ func getPostgresDBConfig() db.Config {
 	if !isSet {
 		portStr = "5432"
 	}
-	port, _ := strconv.Atoi(portStr)
+	port, err := strconv.ParseUint(portStr, 10, 16)
+	Expect(err).NotTo(HaveOccurred())
+
 	return db.Config{
 		Type:     "postgres",
 		User:     user,
 		Password: password,
 		Host:     host,
-		Port:     uint16(port),
-		Timeout:  DefaultDBTimeout,
+		// #nosec - ParseUint above does the overflow checking for us
+		Port:    uint16(port),
+		Timeout: DefaultDBTimeout,
 	}
 }
 
@@ -120,15 +123,17 @@ func getMySQLDBConfig() db.Config {
 	if !isSet {
 		portStr = "3306"
 	}
-	port, _ := strconv.Atoi(portStr)
+	port, err := strconv.ParseUint(portStr, 10, 16)
+	Expect(err).NotTo(HaveOccurred())
 
 	return db.Config{
 		Type:     "mysql",
 		User:     user,
 		Password: password,
 		Host:     host,
-		Port:     uint16(port),
-		Timeout:  DefaultDBTimeout,
+		// #nosec - ParseUint above does the overflow checking for us
+		Port:    uint16(port),
+		Timeout: DefaultDBTimeout,
 	}
 }
 
