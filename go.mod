@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.23.6
 
 require (
-	code.cloudfoundry.org/lager/v3 v3.26.0
+	code.cloudfoundry.org/lager/v3 v3.27.0
 	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/cloudfoundry/sonde-go v0.0.0-20250217093333-7351ffed9384
 	github.com/go-sql-driver/mysql v1.9.0
@@ -27,8 +27,8 @@ require (
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/pprof v0.0.0-20250208200701-d0013a598941 // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
-	go.step.sm/crypto v0.58.0 // indirect
-	golang.org/x/crypto v0.34.0 // indirect
+	go.step.sm/crypto v0.59.0 // indirect
+	golang.org/x/crypto v0.35.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
