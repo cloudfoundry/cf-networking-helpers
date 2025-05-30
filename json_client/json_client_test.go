@@ -118,6 +118,24 @@ var _ = Describe("JsonClient", func() {
 			Expect(logger).To(gbytes.Say(`http-do.*some-key.*some-value`))
 		})
 
+		Context("when route has a hostname", func() {
+			It("uses configured scheme and hostname", func() {
+				method = "GET"
+				err := jsonClient.Do(method, "https://api.hostname/v3/roles?page=2&per_page=3", reqData, &respData, token)
+				Expect(err).NotTo(HaveOccurred())
+
+				Expect(httpClient.DoCallCount()).To(Equal(1))
+				receivedRequest := httpClient.DoArgsForCall(0)
+				Expect(receivedRequest.Method).To(Equal("GET"))
+				Expect(receivedRequest.URL.Scheme).To(Equal("http"))
+				Expect(receivedRequest.URL.Host).To(Equal("some.url"))
+				Expect(receivedRequest.URL.Path).To(Equal("/v3/roles"))
+				Expect(receivedRequest.URL.RawQuery).To(Equal("page=2&per_page=3"))
+				Expect(receivedRequest.Body).To(BeNil())
+				Expect(respData).To(Equal(map[string]string{"some-key": "some-value"}))
+			})
+		})
+
 		It("sets the authorization header with the token", func() {
 			err := jsonClient.Do(method, route, reqData, &respData, token)
 			Expect(err).NotTo(HaveOccurred())
@@ -153,9 +171,10 @@ var _ = Describe("JsonClient", func() {
 			BeforeEach(func() {
 				jsonClient.Url = "%%%%"
 			})
+
 			It("returns an error", func() {
 				err := jsonClient.Do(method, route, reqData, &respData, token)
-				Expect(err).To(MatchError(HavePrefix("http new request: parse")))
+				Expect(err).To(MatchError(HavePrefix("failed to parse URL")))
 			})
 		})
 
