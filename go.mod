@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.23.6
 
 require (
-	code.cloudfoundry.org/lager/v3 v3.40.0
+	code.cloudfoundry.org/lager/v3 v3.41.0
 	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/cloudfoundry/sonde-go v0.0.0-20250505082611-517434ece96d
 	github.com/go-sql-driver/mysql v1.9.3
