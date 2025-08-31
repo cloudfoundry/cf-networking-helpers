@@ -1,5 +1,5 @@
-# code.cloudfoundry.org/lager/v3 v3.44.0
-## explicit; go 1.23.0
+# code.cloudfoundry.org/lager/v3 v3.45.0
+## explicit; go 1.24.0
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
@@ -16,8 +16,8 @@ github.com/Masterminds/semver/v3
 github.com/cloudfoundry/dropsonde/emitter/fake
 github.com/cloudfoundry/dropsonde/metric_sender
 github.com/cloudfoundry/dropsonde/metrics
-# github.com/cloudfoundry/sonde-go v0.0.0-20250818115817-5d1eaa4214d2
-## explicit; go 1.22
+# github.com/cloudfoundry/sonde-go v0.0.0-20250826064732-542f5d3e37ff
+## explicit; go 1.23
 github.com/cloudfoundry/sonde-go/events
 # github.com/go-logr/logr v1.4.3
 ## explicit; go 1.18
@@ -36,7 +36,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20250820193118-f64d9cf942d6
+# github.com/google/pprof v0.0.0-20250830080959-101d87ff5bc3
 ## explicit; go 1.24.0
 github.com/google/pprof/profile
 # github.com/jmoiron/sqlx v1.4.0
@@ -51,7 +51,7 @@ github.com/lib/pq/scram
 # github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 ## explicit
 github.com/nu7hatch/gouuid
-# github.com/onsi/ginkgo/v2 v2.25.1
+# github.com/onsi/ginkgo/v2 v2.25.2
 ## explicit; go 1.23.0
 github.com/onsi/ginkgo/v2
 github.com/onsi/ginkgo/v2/config
@@ -73,8 +73,8 @@ github.com/onsi/ginkgo/v2/internal/parallel_support
 github.com/onsi/ginkgo/v2/internal/testingtproxy
 github.com/onsi/ginkgo/v2/reporters
 github.com/onsi/ginkgo/v2/types
-# github.com/onsi/gomega v1.38.1
-## explicit; go 1.24.0
+# github.com/onsi/gomega v1.38.2
+## explicit; go 1.23.0
 github.com/onsi/gomega
 github.com/onsi/gomega/format
 github.com/onsi/gomega/gbytes
