@@ -1,4 +1,4 @@
-# code.cloudfoundry.org/lager/v3 v3.47.0
+# code.cloudfoundry.org/lager/v3 v3.48.0
 ## explicit; go 1.24.0
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
@@ -16,7 +16,7 @@ github.com/Masterminds/semver/v3
 github.com/cloudfoundry/dropsonde/emitter/fake
 github.com/cloudfoundry/dropsonde/metric_sender
 github.com/cloudfoundry/dropsonde/metrics
-# github.com/cloudfoundry/sonde-go v0.0.0-20250909082137-fc1b731b62ac
+# github.com/cloudfoundry/sonde-go v0.0.0-20250915135239-ebea5d8dc26e
 ## explicit; go 1.23
 github.com/cloudfoundry/sonde-go/events
 # github.com/go-logr/logr v1.4.3
@@ -36,7 +36,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20250903194437-c28834ac2320
+# github.com/google/pprof v0.0.0-20250919162441-8b542baf5bcf
 ## explicit; go 1.24.0
 github.com/google/pprof/profile
 # github.com/jmoiron/sqlx v1.4.0
