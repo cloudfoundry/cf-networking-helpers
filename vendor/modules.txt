@@ -1,4 +1,4 @@
-# code.cloudfoundry.org/lager/v3 v3.54.0
+# code.cloudfoundry.org/lager/v3 v3.55.0
 ## explicit; go 1.24.0
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
@@ -16,7 +16,7 @@ github.com/Masterminds/semver/v3
 github.com/cloudfoundry/dropsonde/emitter/fake
 github.com/cloudfoundry/dropsonde/metric_sender
 github.com/cloudfoundry/dropsonde/metrics
-# github.com/cloudfoundry/sonde-go v0.0.0-20251008062332-ece9fc2bedb4
+# github.com/cloudfoundry/sonde-go v0.0.0-20251117143420-d83918042e9c
 ## explicit; go 1.23
 github.com/cloudfoundry/sonde-go/events
 # github.com/go-logr/logr v1.4.3
@@ -121,7 +121,7 @@ go.step.sm/crypto/x25519
 # go.yaml.in/yaml/v3 v3.0.4
 ## explicit; go 1.16
 go.yaml.in/yaml/v3
-# golang.org/x/crypto v0.44.0
+# golang.org/x/crypto v0.45.0
 ## explicit; go 1.24.0
 golang.org/x/crypto/blowfish
 golang.org/x/crypto/chacha20
