@@ -630,8 +630,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudfoundry/dropsonde v1.1.0 h1:nerhj8K0heOsv/U/Ddou5Esw56YlNeHHJH6MP9QlACQ=
 github.com/cloudfoundry/dropsonde v1.1.0/go.mod h1:OrkxsBrAvM8X0Ve9vaSNKLR+/Jeohu3+J0M4JEaTmnM=
-github.com/cloudfoundry/sonde-go v0.0.0-20251117143420-d83918042e9c h1:KN4/Dn/0Jc49G58mDngV3beZvTcRYn+jHskAzZdRvi0=
-github.com/cloudfoundry/sonde-go v0.0.0-20251117143420-d83918042e9c/go.mod h1:v+cDQ84Hd6/BBmD8KAdCalHd0OStgvmxhitrPrF/ha4=
+github.com/cloudfoundry/sonde-go v0.0.0-20251124090431-33e3494ff82b h1:UY/eET0b0+ghNaGf97EoLjJ+zHPMAqoiCwp1/L9FMoc=
+github.com/cloudfoundry/sonde-go v0.0.0-20251124090431-33e3494ff82b/go.mod h1:v+cDQ84Hd6/BBmD8KAdCalHd0OStgvmxhitrPrF/ha4=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
