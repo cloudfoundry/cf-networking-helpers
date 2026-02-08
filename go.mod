@@ -3,7 +3,7 @@ module code.cloudfoundry.org/cf-networking-helpers
 go 1.24.9
 
 require (
-	code.cloudfoundry.org/lager/v3 v3.59.0
+	code.cloudfoundry.org/lager/v3 v3.60.0
 	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/cloudfoundry/sonde-go v0.0.0-20251217143644-d1670a435f2a
 	github.com/go-sql-driver/mysql v1.9.3
@@ -24,7 +24,7 @@ require (
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
-	github.com/google/pprof v0.0.0-20260115054156-294ebfa9ad83 // indirect
+	github.com/google/pprof v0.0.0-20260202012954-cb029daf43ef // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
 	go.step.sm/crypto v0.76.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
