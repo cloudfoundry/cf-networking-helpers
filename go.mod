@@ -3,15 +3,15 @@ module code.cloudfoundry.org/cf-networking-helpers
 go 1.25.8
 
 require (
-	code.cloudfoundry.org/lager/v3 v3.73.0
+	code.cloudfoundry.org/lager/v3 v3.74.0
 	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/cloudfoundry/sonde-go v0.0.0-20260526083715-66f310f13c26
 	github.com/go-sql-driver/mysql v1.10.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.12.3
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
-	github.com/onsi/ginkgo/v2 v2.30.0
-	github.com/onsi/gomega v1.41.0
+	github.com/onsi/ginkgo/v2 v2.31.0
+	github.com/onsi/gomega v1.42.0
 	github.com/pkg/errors v0.9.1
 	github.com/square/certstrap v1.3.0
 	github.com/tedsuo/ifrit v0.0.0-20260418191334-846868129986
