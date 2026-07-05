@@ -3,7 +3,7 @@ module code.cloudfoundry.org/cf-networking-helpers
 go 1.25.8
 
 require (
-	code.cloudfoundry.org/lager/v3 v3.75.0
+	code.cloudfoundry.org/lager/v3 v3.76.0
 	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/cloudfoundry/sonde-go v0.0.0-20260622134720-d7b012c5b9c4
 	github.com/go-sql-driver/mysql v1.10.0
